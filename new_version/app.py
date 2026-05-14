@@ -709,20 +709,20 @@ def main() -> None:
     st.divider()
 
     st.markdown("## Verify a Claim")
-    claim_text = st.text_input(
+    claim_options = verdicts["raw_claim"].astype(str).tolist()
+    claim_text = st.selectbox(
         "Claim text",
-        placeholder="Write or paste a claim here...",
+        options=claim_options,
+        index=None,
+        placeholder="Select a claim...",
         label_visibility="collapsed",
-    ).strip()
+    )
 
-    if not claim_text:
-        st.info("Write or paste a claim from the processed dataset to view its pipeline result.")
+    if claim_text is None:
+        st.info("Select a claim from the processed dataset to view its pipeline result.")
         st.stop()
 
-    selected = find_processed_claim(verdicts, claim_text)
-    if selected is None:
-        st.warning("No saved verdict matched that claim. Try pasting the exact processed claim or a shorter phrase.")
-        st.stop()
+    selected = verdicts[verdicts["raw_claim"].astype(str) == claim_text].iloc[0]
 
     st.markdown('<div class="section-spacer"></div>', unsafe_allow_html=True)
     st.markdown(
