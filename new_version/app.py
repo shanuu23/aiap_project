@@ -709,6 +709,7 @@ def main() -> None:
     st.divider()
 
     st.markdown("## Verify a Claim")
+    verdicts = verdicts[verdicts["split"] == "test"].copy()
     claim_options = verdicts["raw_claim"].astype(str).tolist()
     claim_text = st.selectbox(
         "Claim text",
